@@ -3,7 +3,8 @@
 import { ArrowUpRight } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Logo } from "@/components/brand/logo"
+import { AnimatedGlobe } from "@/components/brand/animated-globe"
+import { BRAND, Logo, LogoSquare } from "@/components/brand/logo"
 import {
   Sidebar,
   SidebarContent,
@@ -29,7 +30,8 @@ export function AppSidebar() {
     <Sidebar collapsible="icon" variant="inset">
       <SidebarHeader className="px-3 py-3">
         <Link href="/" className="rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring">
-          <Logo className="group-data-[collapsible=icon]:[&>div:last-child]:hidden" />
+          <Logo className="group-data-[collapsible=icon]:hidden" />
+          <LogoSquare className="hidden group-data-[collapsible=icon]:grid" />
         </Link>
       </SidebarHeader>
 
@@ -57,8 +59,8 @@ export function AppSidebar() {
         ))}
       </SidebarContent>
 
-      <SidebarFooter className="group-data-[collapsible=icon]:hidden">
-        <div className="rounded-lg border bg-background/40 p-3 text-xs">
+      <SidebarFooter>
+        <div className="rounded-lg border bg-background/40 p-3 text-xs group-data-[collapsible=icon]:hidden">
           <div className="flex items-center justify-between">
             <span className="font-medium">Dyeing floor</span>
             <span className="inline-flex items-center gap-1.5 text-running">
@@ -70,6 +72,17 @@ export function AppSidebar() {
             {kpis ? `${kpis.total - kpis.offline}/${kpis.total} machines available` : "Connecting…"}
           </p>
         </div>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild tooltip={`Visit ${BRAND.company}`}>
+              <a href={BRAND.website} target="_blank" rel="noopener noreferrer">
+                <AnimatedGlobe />
+                <span>Visit {BRAND.company}</span>
+                <ArrowUpRight className="ml-auto size-3.5 opacity-50" />
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

@@ -8,10 +8,10 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 
 export const metadata: Metadata = {
   title: {
-    default: "Alliance Automations · Kandari-lab",
+    default: "Alliance Automations · Kandari-Lab",
     template: "%s · Alliance Automations",
   },
-  description: "Live monitoring, control and analytics for garment dyeing floors, by Kandari-lab.",
+  description: "Live monitoring, control and analytics for garment dyeing floors, by Kandari-Lab.",
   applicationName: "Alliance Automations",
 }
 

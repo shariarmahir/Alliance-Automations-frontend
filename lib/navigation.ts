@@ -6,7 +6,6 @@ import {
   Handshake,
   LayoutDashboard,
   type LucideIcon,
-  Map,
   Monitor,
   Rows3,
   Tablet,
@@ -41,7 +40,6 @@ export const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
     label: "Business",
     items: [
       { title: "CRM", href: "/crm", icon: Handshake, description: "Buyers, orders and shade approvals" },
-      { title: "Roadmap", href: "/roadmap", icon: Map, description: "Build plan from discovery to SaaS" },
     ],
   },
   {

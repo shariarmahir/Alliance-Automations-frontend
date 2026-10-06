@@ -1,30 +1,46 @@
-import { ArrowRight, ArrowUpRight } from "lucide-react"
+import { ArrowDown, ArrowUpRight } from "lucide-react"
 import Link from "next/link"
-import { BRAND } from "@/components/brand/logo"
+import { HeroTitle } from "@/components/landing/hero-title"
+import { PreparedFor } from "@/components/landing/prepared-for"
+import { ProcessScene } from "@/components/landing/process-scene"
+import { Reveal } from "@/components/reveal"
 import { Button } from "@/components/ui/button"
 
+const TITLE = [{ text: "Optimize dyeing efficiency" }, { text: "through automation." }]
+
+/**
+ * Copy on the left, the running dye line on the right, on the same container edges as the header and every
+ * section below. Two columns in a 5 : 7 ratio keep the scene inside its column, so it never crosses the type
+ * or leaves the page grid. On phones the scene runs beneath the copy.
+ */
 export function Hero() {
   return (
-    <div className="flex flex-col gap-6">
-      <p className="text-sm font-medium tracking-widest text-primary uppercase">{BRAND.tagline}</p>
-      <h1 className="max-w-4xl text-4xl font-semibold tracking-tight text-balance md:text-6xl">
-        Every dyeing machine, every batch, live on one screen.
-      </h1>
-      <p className="max-w-2xl text-lg text-muted-foreground text-pretty">
-        {BRAND.product} connects fifty dyeing machines to one live system: state from the machines, plans from the ERP,
-        alerts before a delivery slips, and AI agents that learn from every batch.
-      </p>
-      <div className="flex flex-wrap gap-3">
-        <Button asChild size="lg" className="h-11 px-5 text-base">
-          <Link href="/dashboard">
-            Open the control room <ArrowRight />
-          </Link>
-        </Button>
-        <Button asChild size="lg" variant="outline" className="h-11 px-5 text-base">
-          <Link href="/tv" target="_blank">
-            Launch TV wallboard <ArrowUpRight />
-          </Link>
-        </Button>
+    <div className="grid items-center gap-12 py-10 md:py-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-12 lg:pt-20 lg:pb-12">
+      <div className="flex flex-col gap-7">
+        <PreparedFor />
+        <HeroTitle lines={TITLE} />
+        <Reveal order={6}>
+          <p className="max-w-md text-base/7 font-medium text-brand text-pretty md:text-lg/8">
+            Alliance Automations links your machines, recipes and orders into one live system. It senses every vat, warns you before a batch runs
+            late, and hands your team a plan instead of a problem.
+          </p>
+        </Reveal>
+        <Reveal order={7} className="flex flex-wrap gap-3">
+          <Button asChild size="lg" className="h-11 px-5 text-base">
+            <a href="#timeline">
+              Plan your timeline <ArrowDown />
+            </a>
+          </Button>
+          <Button asChild size="lg" variant="outline" className="h-11 px-5 text-base">
+            <Link href="/dashboard">
+              Explore the live demo <ArrowUpRight />
+            </Link>
+          </Button>
+        </Reveal>
+      </div>
+
+      <div aria-hidden>
+        <ProcessScene />
       </div>
     </div>
   )

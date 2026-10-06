@@ -2,7 +2,7 @@
 
 # Alliance Automations frontend
 
-Live monitoring, control and analytics UI for a 50-machine garment dyeing floor, by Kandari-lab. Read [project.md](project.md) for the product, data rules and roadmap before changing behavior.
+Live monitoring, control and analytics UI for a 50-machine garment dyeing floor, and the proposal page that sells it, by Kandari-Lab. Read [project.md](project.md) for the product, data rules and roadmap before changing behavior.
 
 ## Commands
 
@@ -28,13 +28,18 @@ There is no `src/` directory. Keep it that way.
 
 ```
 app/
-  page.tsx               landing page
+  page.tsx               the client proposal (landing page)
+  blueprint/             the detail page: problem, solution, build options, technology, custom build form
   (console)/             sidebar + top bar shell: dashboard, control, batches, schedule,
-                         efficiency, ai, crm, roadmap
+                         efficiency, ai, crm
   tv/  tablet/           full-screen displays, no shell
 components/
   ui/                    shadcn primitives
   plant/                 status badges, step readout, fleet map, alert list (shared by screens)
+  landing/               proposal sections; landing/scene/ is the animated hero (SVG)
+  proposal/              timeline planner, inquiry form and their client state
+  blueprint/             detail-page sections, the structure drawing, chip form and the Email/WhatsApp choice
+  brand/                 logo and the Visit Kandari-Lab button
   <feature>/             one folder per screen (dashboard, control, crm, ...); the screen entry
                          is <feature>-view.tsx and only composes the components beside it
 lib/
@@ -43,6 +48,9 @@ lib/
   store/plant.ts         the single source of live state (usePlant, useSnapshot, useKpis)
   time.ts                MINUTE, HOUR, DAY. Never write 86_400_000 or 60 * 60_000 inline
   ai/agents.ts           agent registry and insights computed from live data
+  proposal/              phases (content and default weeks), schedule maths, inquiry validation, contact links
+  blueprint/             build selection model and presets, copy and illustrative figures, build store
+hooks/                   small shared hooks (hydration, reduced motion, mobile)
 ```
 
 ## Architecture rules
@@ -76,4 +84,10 @@ The API differs from v8. Use `useTable`, `tableFeatures({...})` with explicit ro
 
 ## Brand
 
-The logo in `components/brand/logo.tsx` is a **placeholder mark**. To use the official Kandari-lab logo, put the file in `public/brand/` and render it with `next/image` inside `LogoMark` and `Logo`. Nothing else references the mark.
+The Kandari-Lab logo is `public/brand/kandari-lab-logo.png` (wide) and `kandari-lab-mark.png` (square, also `app/icon.png`), rendered by `components/brand/logo.tsx`. Its linework is black on transparent, so it always sits on a light tile. The original 97 MB artwork is not in the repo; downscale any replacement to about 1600 px wide before adding it.
+
+The website address lives in `BRAND.website` and is opened only through `VisitKandariLab`; never print the URL as text.
+
+## Landing animation and motion
+
+The hero scene is declarative SVG animation (SMIL) in `components/landing/scene/`, with no per-frame JavaScript. It sits in the right column of the hero (`components/landing/hero.tsx`), in a 5 : 7 two-column grid on the page container's own edges, so it never crosses the type or leaves the page grid. It is decorative (`aria-hidden`). The landing header and footer use the UI blue as `bg-brand` with `text-brand-foreground` ink; the logo sits on a brand-blue tile so it also works on dark surfaces. Landing cards are transparent `GlowCard`s (`components/glow-card.tsx`, styles in `.glow-card` in globals.css): a blue light always travels the border, and a spotlight follows the pointer on hover. Responsive and fast: wide tables use `ResponsiveTable` (stacked cards on phones); every grid that holds prose sets an explicit `grid-cols-1` so a long word cannot widen a column. Looping animation stops while it is scrolled out of view: `GlowCard` marks itself `data-offscreen` (CSS then pauses the border light and any icon inside) and `ProcessScene` pauses its SMIL animations, both through the shared observer in `lib/visibility.ts`. Section icons are animated SVGs on one 48-unit canvas in `components/landing/icons/` (keyframes `layer-*` and `icon-*` in globals.css); add new ones there rather than using static lucide icons. `AnimatedGlobe` is the coloured icon on every Visit Kandari-Lab link. Keyframes go through `track()` in `anim.tsx`. It switches off through `usePrefersReducedMotion`, which is hydration-safe; Motion components respect reduced motion through the `MotionConfig` in `components/providers.tsx`. Do not read `matchMedia` or `Date.now()` during render in a statically prerendered page; use `useHydrated` for client-only values.

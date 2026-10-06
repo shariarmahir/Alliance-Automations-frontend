@@ -1,5 +1,6 @@
 "use client"
 
+import { MotionConfig } from "motion/react"
 import { ThemeProvider } from "next-themes"
 import { useEffect, type ReactNode } from "react"
 import { Toaster } from "@/components/ui/sonner"
@@ -25,11 +26,13 @@ function PlantFeed() {
 export function Providers({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-      <TooltipProvider delayDuration={150}>
-        <PlantFeed />
-        {children}
-        <Toaster position="bottom-right" />
-      </TooltipProvider>
+      <MotionConfig reducedMotion="user">
+        <TooltipProvider delayDuration={150}>
+          <PlantFeed />
+          {children}
+          <Toaster position="bottom-right" />
+        </TooltipProvider>
+      </MotionConfig>
     </ThemeProvider>
   )
 }

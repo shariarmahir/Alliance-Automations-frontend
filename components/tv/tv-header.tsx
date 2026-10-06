@@ -8,7 +8,7 @@ export function Header() {
   const now = useSnapshot((snapshot) => snapshot.now)
   return (
     <header className="flex items-center gap-5 border-b px-8 py-4">
-      <LogoMark className="size-11" />
+      <LogoMark size="lg" />
       <div className="leading-tight">
         <p className="text-2xl font-semibold tracking-tight">
           Dyeing floor <span className="text-muted-foreground">·</span> <span className="text-primary">Live monitoring</span>

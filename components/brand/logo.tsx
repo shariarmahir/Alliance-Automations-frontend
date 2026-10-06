@@ -1,54 +1,64 @@
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 
 export const BRAND = {
-  company: "Kandari-lab",
+  company: "Kandari-Lab",
   product: "Alliance Automations",
   tagline: "Dyeing floor intelligence",
+  website: "https://frontend-u1mk.vercel.app/",
 } as const
 
+const LOGO = { src: "/brand/kandari-lab-logo.png", width: 1600, height: 967 }
+const MARK = { src: "/brand/kandari-lab-mark.png", size: 256 }
+
 /**
- * Kandari-lab mark: a dye droplet cut by a signal line.
- * To use the official logo, drop it in /public/brand and render it with next/image here.
+ * The logo is transparent with black linework, so it needs a light-enough ground. It sits on a brand-blue
+ * tile, which keeps it legible on dark surfaces; on a brand-blue bar the tile disappears.
  */
-export function LogoMark({ className }: { className?: string }) {
+const TILE = "grid shrink-0 place-items-center rounded-lg bg-brand ring-1 ring-black/10"
+
+/** Tile and artwork heights per size. Explicit, because a percentage height cannot resolve inside the grid tile. */
+const MARK_SIZES = {
+  sm: { tile: "h-8 px-1", image: "h-6" },
+  md: { tile: "h-10 px-1.5", image: "h-8" },
+  lg: { tile: "h-12 px-2", image: "h-10" },
+  xl: { tile: "h-16", image: "h-16" },
+} as const
+
+/** Wide Kandari-Lab logo. The width follows the artwork. */
+export function LogoMark({ size = "md", className }: { size?: keyof typeof MARK_SIZES; className?: string }) {
+  const { tile, image } = MARK_SIZES[size]
   return (
-    <svg viewBox="0 0 40 40" className={cn("size-9", className)} role="img" aria-label={BRAND.company}>
-      <defs>
-        <linearGradient id="kl-mark" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="var(--primary)" />
-          <stop offset="1" stopColor="var(--chart-1)" />
-        </linearGradient>
-      </defs>
-      <rect width="40" height="40" rx="11" fill="url(#kl-mark)" />
-      <path
-        d="M20 8.5c4.7 6 7.5 10.3 7.5 14a7.5 7.5 0 0 1-15 0c0-3.7 2.8-8 7.5-14Z"
-        fill="none"
-        stroke="var(--primary-foreground)"
-        strokeWidth="2.4"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M9 24.5h6.2l2.3-4 3.4 7 2.4-4.4H31"
-        fill="none"
-        stroke="var(--primary-foreground)"
-        strokeWidth="2.4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+    <span className={cn(TILE, tile, className)}>
+      <Image src={LOGO.src} width={LOGO.width} height={LOGO.height} alt={BRAND.company} className={cn(image, "w-auto max-w-none")} priority />
+    </span>
   )
 }
 
-export function Logo({ className, compact = false }: { className?: string; compact?: boolean }) {
+/** Square mark for collapsed navigation and other tight spaces. */
+export function LogoSquare({ className }: { className?: string }) {
   return (
-    <div className={cn("flex items-center gap-2.5", className)}>
-      <LogoMark />
-      {!compact && (
-        <div className="leading-none">
-          <div className="text-[15px] font-semibold tracking-tight">{BRAND.company}</div>
-          <div className="mt-1 text-[11px] text-muted-foreground">{BRAND.product}</div>
-        </div>
-      )}
+    <span className={cn(TILE, "size-8 overflow-hidden", className)}>
+      <Image src={MARK.src} width={MARK.size} height={MARK.size} alt={BRAND.company} className="size-8 object-cover" />
+    </span>
+  )
+}
+
+interface LogoProps {
+  size?: keyof typeof MARK_SIZES
+  /** On a brand-blue surface: drops the tile outline so the artwork sits directly on the bar. */
+  flush?: boolean
+  className?: string
+}
+
+export function Logo({ size, flush, className }: LogoProps) {
+  return (
+    <div className={cn("flex items-center gap-3", className)}>
+      <LogoMark size={size} className={flush ? "ring-0" : undefined} />
+      <div className="leading-none">
+        <div className="text-base font-semibold tracking-tight whitespace-nowrap">{BRAND.product}</div>
+        <div className="mt-1 text-xs opacity-70">by {BRAND.company}</div>
+      </div>
     </div>
   )
 }
