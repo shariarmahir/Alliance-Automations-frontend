@@ -7,6 +7,7 @@ import { GlowCard } from "@/components/glow-card"
 import { StackDiagram } from "@/components/blueprint/stack-diagram"
 import { Button } from "@/components/ui/button"
 import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart"
+import { LazyMount } from "@/components/blueprint/lazy-mount"
 import { ResponsiveTable } from "@/components/blueprint/responsive-table"
 import { layersFromBuild, PRESETS, type PackageId } from "@/lib/blueprint/build"
 import { useBuild } from "@/lib/blueprint/build-store"
@@ -115,18 +116,19 @@ export function OptionsDetail() {
             <h3 className="font-medium">What each option gives you</h3>
             <p className="mt-1 text-sm text-brand">Rated 1 to 5. Higher is stronger.</p>
           </div>
-          <ChartContainer config={scoreConfig} className="aspect-auto h-72 w-full">
-            <BarChart data={SCORES} margin={{ left: -16, right: 4 }} barGap={2}>
-              <CartesianGrid vertical={false} strokeOpacity={0.3} />
-              <XAxis dataKey="factor" tickLine={false} axisLine={false} tick={{ fontSize: 10 }} interval={0} />
-              <YAxis domain={[0, 5]} ticks={[1, 3, 5]} tickLine={false} axisLine={false} />
-              <ChartTooltip cursor={{ fill: "var(--muted)", opacity: 0.4 }} content={<ChartTooltipContent />} />
-              <ChartLegend content={<ChartLegendContent />} />
-              <Bar dataKey="moderate" fill="var(--color-moderate)" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="advanced" fill="var(--color-advanced)" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ChartContainer>
-          <p className="text-xs text-muted-foreground">An indicative judgement to help you compare, not a measurement.</p>
+          <LazyMount className="h-72 w-full">
+            <ChartContainer config={scoreConfig} className="aspect-auto size-full">
+              <BarChart data={SCORES} margin={{ left: -16, right: 4 }} barGap={2}>
+                <CartesianGrid vertical={false} strokeOpacity={0.3} />
+                <XAxis dataKey="factor" tickLine={false} axisLine={false} tick={{ fontSize: 10 }} interval={0} />
+                <YAxis domain={[0, 5]} ticks={[1, 3, 5]} tickLine={false} axisLine={false} />
+                <ChartTooltip cursor={{ fill: "var(--muted)", opacity: 0.4 }} content={<ChartTooltipContent />} />
+                <ChartLegend content={<ChartLegendContent />} />
+                <Bar dataKey="moderate" fill="var(--color-moderate)" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="advanced" fill="var(--color-advanced)" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ChartContainer>
+          </LazyMount>
         </GlowCard>
       </div>
     </div>

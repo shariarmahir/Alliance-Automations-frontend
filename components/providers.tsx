@@ -30,7 +30,7 @@ export function Providers({ children }: { children: ReactNode }) {
         <TooltipProvider delayDuration={150}>
           <PlantFeed />
           {children}
-          <Toaster position="bottom-right" />
+          <Toaster position="bottom-right" dir="ltr" />
         </TooltipProvider>
       </MotionConfig>
     </ThemeProvider>

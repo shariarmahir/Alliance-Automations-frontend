@@ -18,15 +18,24 @@ export function BlueprintHero() {
             See the problem we solve, two ways to build the solution, why each technology earns its place, and draw the structure you want.
           </p>
         </Reveal>
-        <Reveal order={7} className="flex flex-wrap gap-3">
-          <Button asChild size="lg" className="h-11 px-5 text-base">
+        <Reveal order={7} className="flex gap-2 sm:gap-3">
+          <Button
+            asChild
+            size="lg"
+            className="h-11 min-w-0 flex-1 px-3 text-sm max-sm:h-auto max-sm:min-h-11 max-sm:py-1.5 max-sm:leading-tight max-sm:whitespace-normal sm:flex-none sm:px-5 sm:text-base"
+          >
             <a href="#build">
-              Design your build <ArrowDown />
+              Design your build <ArrowDown className="max-sm:hidden" />
             </a>
           </Button>
-          <Button asChild size="lg" variant="outline" className="h-11 px-5 text-base">
+          <Button
+            asChild
+            size="lg"
+            variant="outline"
+            className="h-11 min-w-0 flex-1 px-3 text-sm max-sm:h-auto max-sm:min-h-11 max-sm:py-1.5 max-sm:leading-tight max-sm:whitespace-normal sm:flex-none sm:px-5 sm:text-base"
+          >
             <Link href="/">
-              <ArrowLeft /> Back to proposal
+              <ArrowLeft className="max-sm:hidden" /> Back to proposal
             </Link>
           </Button>
         </Reveal>

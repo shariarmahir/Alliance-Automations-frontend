@@ -3,6 +3,7 @@
 import { Activity, Gauge, ShieldCheck, Timer } from "lucide-react"
 import { pct, split } from "@/components/efficiency/metrics"
 import { Delta, StatCard } from "@/components/stat-card"
+import { PERCENT_FORMAT } from "@/lib/number-format"
 import { average, type DailyMetric } from "@/lib/sim/history"
 
 export function OeeTiles({ history }: { history: DailyMetric[] }) {
@@ -23,7 +24,7 @@ export function OeeTiles({ history }: { history: DailyMetric[] }) {
             key={tile.label}
             label={tile.label}
             value={now}
-            format={{ style: "percent", maximumFractionDigits: 1 }}
+            format={PERCENT_FORMAT}
             icon={tile.icon}
             hint={
               <>

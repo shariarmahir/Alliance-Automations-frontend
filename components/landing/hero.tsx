@@ -21,19 +21,28 @@ export function Hero() {
         <HeroTitle lines={TITLE} />
         <Reveal order={6}>
           <p className="max-w-md text-base/7 font-medium text-brand text-pretty md:text-lg/8">
-            Alliance Automations links your machines, recipes and orders into one live system. It senses every vat, warns you before a batch runs
-            late, and hands your team a plan instead of a problem.
+            Alliance Automations links your machines, recipes and orders into one live system. It senses every vat, warns you before a batch runs late, and
+            hands your team a plan instead of a problem.
           </p>
         </Reveal>
-        <Reveal order={7} className="flex flex-wrap gap-3">
-          <Button asChild size="lg" className="h-11 px-5 text-base">
+        <Reveal order={7} className="flex gap-2 sm:gap-3">
+          <Button
+            asChild
+            size="lg"
+            className="h-11 min-w-0 flex-1 px-3 text-sm max-sm:h-auto max-sm:min-h-11 max-sm:py-1.5 max-sm:leading-tight max-sm:whitespace-normal sm:flex-none sm:px-5 sm:text-base"
+          >
             <a href="#timeline">
-              Plan your timeline <ArrowDown />
+              Plan your timeline <ArrowDown className="max-sm:hidden" />
             </a>
           </Button>
-          <Button asChild size="lg" variant="outline" className="h-11 px-5 text-base">
+          <Button
+            asChild
+            size="lg"
+            variant="outline"
+            className="h-11 min-w-0 flex-1 px-3 text-sm max-sm:h-auto max-sm:min-h-11 max-sm:py-1.5 max-sm:leading-tight max-sm:whitespace-normal sm:flex-none sm:px-5 sm:text-base"
+          >
             <Link href="/dashboard">
-              Explore the live demo <ArrowUpRight />
+              Explore the live demo <ArrowUpRight className="max-sm:hidden" />
             </Link>
           </Button>
         </Reveal>

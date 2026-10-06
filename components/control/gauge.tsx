@@ -1,6 +1,7 @@
 "use client"
 
 import NumberFlow from "@number-flow/react"
+import { fixedFormat } from "@/lib/number-format"
 import { cn } from "@/lib/utils"
 
 const ARC = Math.PI * 40
@@ -38,11 +39,7 @@ export function Gauge({
           />
         </svg>
         <div className="absolute inset-x-0 bottom-0 text-center">
-          <NumberFlow
-            value={value}
-            format={{ maximumFractionDigits: digits, minimumFractionDigits: digits }}
-            className="text-2xl font-semibold tabular"
-          />
+          <NumberFlow value={value} format={fixedFormat(digits)} className="text-2xl font-semibold tabular" />
           <span className="ml-1 text-xs text-muted-foreground">{unit}</span>
         </div>
       </div>
