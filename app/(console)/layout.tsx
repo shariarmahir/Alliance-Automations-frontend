@@ -9,7 +9,7 @@ export default function ConsoleLayout({ children }: { children: ReactNode }) {
       <AppSidebar />
       <SidebarInset className="min-w-0">
         <TopBar />
-        <main className="flex-1 bg-blueprint px-4 py-6 md:px-6">{children}</main>
+        <main className="flex-1 bg-ambient px-4 py-6 md:px-6">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   )

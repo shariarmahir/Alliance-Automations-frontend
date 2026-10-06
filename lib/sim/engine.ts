@@ -1,5 +1,5 @@
 import { REASONS, buildRecipe, correctionSteps, machineById, plannedMinutes } from "@/lib/domain/catalog"
-import { COMPLETE_DWELL_MIN, MINUTE } from "@/lib/domain/rules"
+import { COMPLETE_DWELL_MIN } from "@/lib/domain/rules"
 import type {
   Batch,
   Hold,
@@ -11,6 +11,7 @@ import type {
   ReasonCode,
   Run,
 } from "@/lib/domain/types"
+import { HOUR, MINUTE } from "@/lib/time"
 import { between, weighted, type Random } from "./random"
 
 /** Chance per machine-minute that a running batch is put on hold. Roughly five holds an hour across 50 machines. */
@@ -18,7 +19,7 @@ const HOLD_RATE_PER_MIN = 0.0016
 /** Chance per machine-minute that an idle machine is taken down for maintenance. */
 const MAINTENANCE_RATE_PER_MIN = 0.0002
 const PRODUCTION_DAY_START_HOUR = 6
-const HISTORY_WINDOW_MS = 36 * 60 * MINUTE
+const HISTORY_WINDOW_MS = 36 * HOUR
 const EVENT_LIMIT = 250
 
 const HOLD_WEIGHTS: readonly (readonly [ReasonCode, number])[] = [

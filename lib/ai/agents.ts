@@ -1,5 +1,5 @@
-import { REASONS } from "@/lib/domain/catalog"
 import { deliveryRisk } from "@/lib/domain/analytics"
+import { REASONS } from "@/lib/domain/catalog"
 import { DELAY_THRESHOLD_MIN } from "@/lib/domain/rules"
 import type { Alert, MachineView, PlantKpis, PlantSnapshot, ReasonCode, ShadeDepth } from "@/lib/domain/types"
 import { formatHm, formatInt, formatShortDate } from "@/lib/format"

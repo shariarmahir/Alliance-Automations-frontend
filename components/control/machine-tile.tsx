@@ -2,10 +2,11 @@
 
 import { motion } from "motion/react"
 import Link from "next/link"
+import { ExcessTime } from "@/components/plant/excess"
 import { STATUS_META, StatusBadge } from "@/components/plant/status"
 import { ShadeSwatch, StepReadout } from "@/components/plant/step-readout"
 import type { MachineView } from "@/lib/domain/types"
-import { formatClock, formatHm } from "@/lib/format"
+import { formatClock } from "@/lib/format"
 import { cn } from "@/lib/utils"
 
 function Ring({ value, className }: { value: number; className: string }) {
@@ -98,8 +99,8 @@ export function MachineTile({ view }: { view: MachineView }) {
             </div>
             <div>
               <p className="text-muted-foreground">Excess</p>
-              <p className={cn("font-mono tabular", view.excessMin >= 15 ? "text-delayed" : view.excessMin > 0 ? "text-held" : "text-muted-foreground")}>
-                {view.excessMin > 0 ? `+${formatHm(view.excessMin)}` : "—"}
+              <p>
+                <ExcessTime minutes={view.excessMin} />
               </p>
             </div>
           </div>

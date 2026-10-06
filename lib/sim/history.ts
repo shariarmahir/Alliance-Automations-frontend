@@ -1,5 +1,5 @@
-import { MINUTE } from "@/lib/domain/rules"
 import type { ReasonCode } from "@/lib/domain/types"
+import { DAY } from "@/lib/time"
 import { createRandom } from "./random"
 
 export type LossReason = Exclude<ReasonCode, "maintenance">
@@ -17,7 +17,6 @@ export interface DailyMetric {
   losses: Record<LossReason, number>
 }
 
-const DAY = 24 * 60 * MINUTE
 export const HISTORY_DAYS = 42
 /** Monitoring went live two weeks ago; everything before is the measured baseline. */
 export const GO_LIVE_DAYS_AGO = 14

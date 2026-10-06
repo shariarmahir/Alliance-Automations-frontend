@@ -1,7 +1,7 @@
 "use client"
 
-import { AnimatePresence, motion } from "motion/react"
 import { Check, ShieldCheck } from "lucide-react"
+import { AnimatePresence, motion } from "motion/react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { REASONS, machineById } from "@/lib/domain/catalog"

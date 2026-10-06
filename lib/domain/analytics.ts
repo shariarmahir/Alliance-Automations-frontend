@@ -1,8 +1,6 @@
+import { HOUR, MINUTE } from "@/lib/time"
 import { BAYS, BUYERS, temperatureProfile } from "./catalog"
-import { MINUTE } from "./rules"
 import type { CompletedBatch, MachineView, Order, RecipeStep, Run } from "./types"
-
-const HOUR = 60 * MINUTE
 
 /** Kilograms finished in each of the last `hours` clock hours, oldest first. */
 export function hourlyOutput(completed: CompletedBatch[], now: number, hours = 24) {

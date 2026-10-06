@@ -21,8 +21,6 @@ export const formatLongDate = (ms: number) => longDate.format(ms)
 export const formatShortDate = (ms: number) => shortDate.format(ms)
 export const formatInt = (value: number) => integer.format(value)
 
-export const formatPct = (ratio: number, digits = 0) => `${(ratio * 100).toFixed(digits)}%`
-
 export function formatKg(kg: number) {
   return kg >= 10_000 ? `${(kg / 1000).toFixed(1)} t` : `${integer.format(kg)} kg`
 }

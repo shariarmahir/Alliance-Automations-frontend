@@ -65,8 +65,10 @@ export function StatusDot({ status, className }: { status: MachineStatus; classN
   )
 }
 
-export function PrepBadge({ prep }: { prep: "ready" | "preparing" | null }) {
+/** Preparation state of the batch a row shows. "loaded" means it is already in the machine. */
+export function PrepBadge({ prep }: { prep: "ready" | "preparing" | "loaded" | null }) {
   if (!prep) return <span className="text-xs text-muted-foreground">Not planned</span>
+  if (prep === "loaded") return <span className="text-xs text-muted-foreground">In machine</span>
   return (
     <span className={cn("inline-flex items-center gap-1.5 text-xs font-medium", prep === "ready" ? "text-running" : "text-held")}>
       {prep === "ready" ? <PackageCheck className="size-3.5" aria-hidden /> : <Clock className="size-3.5" aria-hidden />}

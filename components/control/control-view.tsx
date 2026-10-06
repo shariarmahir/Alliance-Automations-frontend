@@ -56,7 +56,7 @@ export function ControlView() {
           })}
         </ToggleGroup>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="flex w-full flex-wrap items-center gap-2 sm:ml-auto sm:w-auto">
           <Select value={bay} onValueChange={setBay}>
             <SelectTrigger size="sm" className="w-36" aria-label="Filter by bay">
               <SelectValue />
@@ -70,7 +70,7 @@ export function ControlView() {
               ))}
             </SelectContent>
           </Select>
-          <InputGroup className="h-7 w-56">
+          <InputGroup className="h-7 min-w-0 flex-1 sm:w-56 sm:flex-none">
             <InputGroupAddon>
               <Search aria-hidden />
             </InputGroupAddon>

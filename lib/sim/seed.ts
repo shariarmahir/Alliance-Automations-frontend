@@ -1,11 +1,10 @@
 import { BUYERS, GARMENTS, MACHINES, SHADES, buildRecipe } from "@/lib/domain/catalog"
-import { MINUTE } from "@/lib/domain/rules"
 import type { Batch, BuyerTier, MachineState, Order, OrderStage, PlantSnapshot } from "@/lib/domain/types"
+import { DAY, HOUR, MINUTE } from "@/lib/time"
 import { advance, productionDayStart, startRun } from "./engine"
 import { between, pick, weighted, type Random } from "./random"
 
-const DAY = 24 * 60 * MINUTE
-const WARM_UP_MS = 30 * 60 * MINUTE
+const WARM_UP_MS = 30 * HOUR
 
 const ORDERS_PER_TIER: Record<BuyerTier, number> = { Strategic: 6, Key: 5, Growth: 4 }
 

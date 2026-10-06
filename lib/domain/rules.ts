@@ -1,4 +1,5 @@
 import { formatHm } from "@/lib/format"
+import { MINUTE } from "@/lib/time"
 import { MACHINES, REASONS, buyerById, plannedMinutes, temperatureProfile } from "./catalog"
 import type {
   Alert,
@@ -17,8 +18,6 @@ import type {
   Telemetry,
 } from "./types"
 
-export const MINUTE = 60_000
-
 /** A batch is delayed once its projected end passes the standard target by this many minutes. */
 export const DELAY_THRESHOLD_MIN = 15
 /** Overruns beyond this escalate from the supervisor to the production manager. */
@@ -35,7 +34,7 @@ function jitter(now: number, seed: number, amplitude: number) {
 }
 
 /** Minutes spent in the current step. Time on hold does not count. */
-export function stepElapsedMin(run: Run, now: number) {
+function stepElapsedMin(run: Run, now: number) {
   const until = run.hold ? run.hold.since : now
   return Math.max(0, (until - run.stepStartedAt) / MINUTE)
 }
@@ -80,7 +79,7 @@ const IDLE_TELEMETRY: Telemetry = {
   powerKw: 0,
 }
 
-export function readTelemetry(
+function readTelemetry(
   machine: Machine,
   recipe: RecipeStep[],
   progress: StepProgress,
@@ -141,7 +140,7 @@ function remarkFor(status: MachineStatus, state: MachineState, excessMin: number
   }
 }
 
-export function buildView(
+function buildView(
   machine: Machine,
   state: MachineState,
   batches: Record<string, Batch>,

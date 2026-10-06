@@ -27,7 +27,7 @@ const BAY_LAYOUT: { type: MachineType; capacities: number[] }[] = [
 
 const LINKS: ControllerLink[] = ["OPC UA", "Modbus TCP", "Modbus TCP", "RS485 retrofit"]
 
-export const MACHINES_PER_BAY = 10
+const MACHINES_PER_BAY = 10
 
 export const MACHINES: Machine[] = ROBOT_NAMES.map((name, i) => {
   const bay = Math.floor(i / MACHINES_PER_BAY) + 1

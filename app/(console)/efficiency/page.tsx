@@ -10,7 +10,7 @@ export default function EfficiencyPage() {
       <PageHeader
         eyebrow="Insights"
         title="Efficiency & losses"
-        description="Four weeks of baseline before go-live, then the effect of live monitoring. Losses come from reason codes raised on every hold."
+        description="Illustrative demo data, not measured results. It shows the format of the four-week baseline and the before-and-after view a real pilot produces."
       />
       <EfficiencyView />
     </>

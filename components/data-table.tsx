@@ -25,7 +25,7 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/in
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
 
-export const dataTableFeatures = tableFeatures({
+const dataTableFeatures = tableFeatures({
   columnFilteringFeature,
   globalFilteringFeature,
   filteredRowModel: createFilteredRowModel(),
@@ -39,7 +39,9 @@ export const dataTableFeatures = tableFeatures({
 
 type Features = typeof dataTableFeatures
 
-export type DataTableColumn<TData extends RowData> = ColumnDef<Features, TData, any>
+/** Columns of one table hold different value types, and TanStack's column type is invariant in its value, so the value is a wildcard. */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type DataTableColumn<TData extends RowData> = ColumnDef<Features, TData, any>
 
 export const columnHelper = <TData extends RowData>() => createColumnHelper<Features, TData>()
 

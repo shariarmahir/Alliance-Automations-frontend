@@ -79,5 +79,15 @@ export const usePlant = create<PlantState>()((set, get) => {
   }
 })
 
+/**
+ * Selectors for components rendered inside <PlantGate>. The gate mounts its children only after the
+ * first snapshot exists, so the snapshot and KPIs are never null there.
+ */
+export function useSnapshot<T>(select: (snapshot: PlantSnapshot) => T): T {
+  return usePlant((state) => select(state.snapshot!))
+}
+
+export const useKpis = () => usePlant((state) => state.kpis!)
+
 export const useMachineView = (machineId: string) =>
   usePlant((state) => state.views.find((view) => view.machine.id === machineId))
