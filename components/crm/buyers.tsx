@@ -1,7 +1,8 @@
 "use client"
 
+import { Panel } from "@/components/panel"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { buyerVolumes } from "@/lib/domain/analytics"
 import type { Order } from "@/lib/domain/types"
 import { formatKg } from "@/lib/format"
@@ -13,7 +14,7 @@ export function Buyers({ orders }: { orders: Order[] }) {
   return (
     <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
       {volumes.map(({ buyer, openOrders, openKg, pendingApprovals }) => (
-        <Card key={buyer.id} size="sm">
+        <Panel key={buyer.id} className="[--card-spacing:--spacing(3)] md:[--card-spacing:--spacing(4)]">
           <CardHeader>
             <div className="flex items-center gap-3">
               <Avatar className="size-10 rounded-lg">
@@ -61,7 +62,7 @@ export function Buyers({ orders }: { orders: Order[] }) {
               {pendingApprovals > 0 && <span className="font-medium text-held">{pendingApprovals} approval{pendingApprovals > 1 && "s"}</span>}
             </div>
           </CardContent>
-        </Card>
+        </Panel>
       ))}
     </div>
   )

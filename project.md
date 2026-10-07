@@ -9,16 +9,16 @@ A complete UI on a deterministic plant simulator. There is no backend, database,
 | Route | Screen | What it shows |
 | --- | --- | --- |
 | `/` | Proposal | The client-facing proposal: animated hero, problem, solution, live demo, risks, an adjustable timeline and the "start with us" form |
-| `/dashboard` | Overview | KPI row, fleet map of all 50 machines, live alerts, 24 h output, bay load, delivery risk, utility intensity |
-| `/control` | Control panel | Filterable grid of machine tiles with cycle progress and live step values |
-| `/control/[machineId]` | Machine detail | Sensor gauges, planned vs actual temperature, recipe timeline, hold and shade-check commands, event log |
+| `/dashboard` | Overview | KPI cards with sparklines and meters, fleet map, "Needs you now" action queue with one-tap commands, live alerts, 24 h output, delivery risk, bay load, utility intensity |
+| `/control` | Control panel | Summary strip; tiles (recipe ring, next best action) or a dense list; filter by bay, status and search; sort by urgency, finish or progress; efficiency mode (only machines waiting on a person, each with its one-tap command); bay-wide hold, release and acknowledge-all. Keys: `/` search, `E` efficiency mode, `V` tiles or list. Layout choices persist per browser |
+| `/control/[machineId]` | Machine detail | Header with cycle ring, timings and next action; previous/next machine (`[` `]`); recipe process strip; sensor gauges; planned vs actual temperature; batch; recipe steps; state-aware commands (hold, release, extend hold, confirm load or unload, shade check, note, call supervisor); filterable event log |
 | `/batches` | Batches | Sortable, searchable table of batches in machines and completed today |
 | `/schedule` | Schedule | Per-bay machine timeline (done, running, next) and a delivery and maintenance calendar |
 | `/efficiency` | Efficiency | OEE trend with go-live marker, loss Pareto, utility intensity, improvement levers (illustrative data) |
 | `/ai` | AI agents | Seven-agent registry with live insights and a question-answering assistant |
 | `/crm` | CRM | Order pipeline, orders table, buyer cards, shade approvals |
-| `/tv` | TV wallboard | Full screen, rotates through the five bays, alert ticker |
-| `/tablet` | Operator tablet | Touch UI: reason-code holds, ΔE keypad, batch scan |
+| `/tv` | TV wallboard | Scales from a laptop to a 4K wall; shift progress, KPI strip, bay tabs with alert counts and rotation bar, machine table (columns drop as the screen narrows), "Needs attention" queue, output by hour, alert ticker. Keys: Space pause, ←/→ bay, F full screen |
+| `/tablet` | Operator tablet | Touch UI: bay tabs with alert counts, machine rail with progress and "needs you" markers, live step with animated icon and next steps, sensor tiles, state-aware commands (resume, extend, confirm load or unload, reason-code holds), quick notes, call supervisor, ΔE keypad, batch scan, machine log, full screen |
 | `/blueprint` | Project blueprint | The problem, the solution, Moderate and Advanced build options with structure drawings, why each technology, a build-your-own structure form, and a closing contact call to action |
 
 The `Finishing` view in the original reference screenshot is not built yet.

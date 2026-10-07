@@ -20,6 +20,9 @@ const HOLD_RATE_PER_MIN = 0.0016
 const MAINTENANCE_RATE_PER_MIN = 0.0002
 const PRODUCTION_DAY_START_HOUR = 6
 const HISTORY_WINDOW_MS = 36 * HOUR
+/** Minutes between a batch arriving at the machine and its run starting, varied per batch. */
+const MIN_LOAD_GAP_MIN = 6
+const MAX_LOAD_GAP_MIN = 18
 const EVENT_LIMIT = 250
 
 const HOLD_WEIGHTS: readonly (readonly [ReasonCode, number])[] = [
@@ -190,7 +193,7 @@ function advanceMachine(state: MachineState, d: PlantSnapshot, dtMin: number, ra
     }
 
     case "ready": {
-      const loadGapMin = 6 + (Number(state.next!.batchId.slice(2)) % 12)
+      const loadGapMin = MIN_LOAD_GAP_MIN + (Number(state.next!.batchId.slice(2)) % (MAX_LOAD_GAP_MIN - MIN_LOAD_GAP_MIN))
       if (d.now - state.phaseSince < loadGapMin * MINUTE) return state
       const batch = d.batches[state.next!.batchId]
       log(d, state.machineId, "start", `${batch.id} started · ${batch.qtyKg} kg`)
@@ -219,9 +222,22 @@ export function advance(snapshot: PlantSnapshot, to: number, random: Random): Pl
   }
 
   d.dayStart = productionDayStart(d.now)
-  d.completed = d.completed.filter((c) => c.endedAt >= d.now - HISTORY_WINDOW_MS)
-  d.events = d.events.slice(-EVENT_LIMIT)
+  const completed = d.completed.filter((c) => c.endedAt >= d.now - HISTORY_WINDOW_MS)
+  d.completed = sameItems(completed, snapshot.completed) ? snapshot.completed : completed
+  d.events = d.events.length === snapshot.events.length ? snapshot.events : d.events.slice(-EVENT_LIMIT)
+  d.orders = sameItems(d.orders, snapshot.orders) ? snapshot.orders : d.orders
+  if (Object.keys(d.batches).length === Object.keys(snapshot.batches).length && Object.entries(d.batches).every(([id, b]) => snapshot.batches[id] === b)) {
+    d.batches = snapshot.batches
+  }
   return d
+}
+
+/**
+ * Most ticks change no order, batch, event or finished batch. Handing back the previous array when nothing changed
+ * keeps its identity, so charts and lists built from it skip their re-render.
+ */
+function sameItems<T>(next: T[], previous: T[]) {
+  return next.length === previous.length && next.every((item, index) => item === previous[index])
 }
 
 /** Operator commands. The pilot never writes to a PLC; commands only change the tracked state. */
@@ -236,6 +252,34 @@ export function applyHold(d: PlantSnapshot, machineId: string, reason: ReasonCod
 export function releaseHold(d: PlantSnapshot, machineId: string): PlantSnapshot {
   const next = updateRun(d, machineId, (run) => (run.hold ? { ...run, hold: { ...run.hold, until: d.now } } : run))
   return logCommand(next, machineId, "command", "Hold released by operator")
+}
+
+export function extendHold(d: PlantSnapshot, machineId: string, minutes: number): PlantSnapshot {
+  const next = updateRun(d, machineId, (run) => (run.hold ? { ...run, hold: { ...run.hold, until: run.hold.until + minutes * MINUTE } } : run))
+  return logCommand(next, machineId, "command", `Hold extended by ${minutes} min`)
+}
+
+/**
+ * The operator confirms the fabric is out of the machine. The finished batch would otherwise wait out its full unload
+ * dwell; moving the phase start back lets the next tick free the machine.
+ */
+export function confirmUnload(d: PlantSnapshot, machineId: string): PlantSnapshot {
+  const next = updatePhase(d, machineId, "complete", COMPLETE_DWELL_MIN)
+  return next === d ? d : logCommand(next, machineId, "command", "Unload confirmed by operator")
+}
+
+/** The operator confirms the next batch is loaded, so the run starts on the next tick instead of after the load gap. */
+export function confirmLoad(d: PlantSnapshot, machineId: string): PlantSnapshot {
+  const next = updatePhase(d, machineId, "ready", MAX_LOAD_GAP_MIN)
+  return next === d ? d : logCommand(next, machineId, "command", "Batch load confirmed by operator")
+}
+
+function updatePhase(d: PlantSnapshot, machineId: string, phase: MachineState["phase"], minutes: number): PlantSnapshot {
+  const index = d.states.findIndex((state) => state.machineId === machineId && state.phase === phase)
+  if (index < 0) return d
+  const states = d.states.slice()
+  states[index] = { ...states[index], phaseSince: Math.min(states[index].phaseSince, d.now - minutes * MINUTE) }
+  return { ...d, states }
 }
 
 export function logCommand(d: PlantSnapshot, machineId: string, kind: PlantEventKind, message: string): PlantSnapshot {

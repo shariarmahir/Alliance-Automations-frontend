@@ -10,7 +10,7 @@ export default function ControlPage() {
       <PageHeader
         eyebrow="Supervisory control"
         title="Control panel"
-        description="Live state of every machine. Open a machine for its recipe timeline, sensors and operator commands."
+        description="Every machine, live. Switch on efficiency mode to see only the machines waiting on you, each with a one-tap fix."
       />
       <ControlView />
     </>

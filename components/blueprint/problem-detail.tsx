@@ -1,10 +1,10 @@
 "use client"
 
 import { Bar, BarChart, LabelList, XAxis, YAxis } from "recharts"
-import { GlowCard } from "@/components/glow-card"
-import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart"
-import { LazyMount } from "@/components/blueprint/lazy-mount"
 import { ResponsiveTable } from "@/components/blueprint/responsive-table"
+import { GlowCard } from "@/components/glow-card"
+import { LazyMount } from "@/components/lazy-mount"
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart"
 import { LOSS_SHARES, PROBLEM_MAP } from "@/lib/blueprint/content"
 
 const config = { share: { label: "Share of lost machine time", color: "var(--primary)" } } satisfies ChartConfig

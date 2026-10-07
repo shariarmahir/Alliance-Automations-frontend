@@ -1,15 +1,18 @@
 "use client"
 
+import { Panel } from "@/components/panel"
+import { PanelTitle } from "@/components/panel-title"
 import { AlertList } from "@/components/plant/alert-list"
-import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { usePlant } from "@/lib/store/plant"
+import { Bell } from "@/components/plant/icons/console-icons"
+import { CardAction, CardContent, CardDescription, CardHeader } from "@/components/ui/card"
+import { usePlantDerived } from "@/lib/store/plant"
 
 export function AlertsCard() {
-  const alerts = usePlant((state) => state.alerts)
+  const alerts = usePlantDerived((state) => state.alerts)
   return (
-    <Card className="h-full">
+    <Panel className="h-full">
       <CardHeader>
-        <CardTitle>Live alerts</CardTitle>
+        <PanelTitle icon={Bell}>Live alerts</PanelTitle>
         <CardDescription>Delays escalate to the manager after 60 minutes</CardDescription>
         <CardAction className="text-sm font-medium text-delayed tabular">
           {alerts.filter((a) => !a.acknowledged).length} open
@@ -18,6 +21,6 @@ export function AlertsCard() {
       <CardContent>
         <AlertList alerts={alerts} limit={6} />
       </CardContent>
-    </Card>
+    </Panel>
   )
 }

@@ -11,7 +11,8 @@ import { ShadeSwatch } from "@/components/plant/step-readout"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import type { MachineStatus } from "@/lib/domain/types"
 import { formatClock } from "@/lib/format"
-import { usePlant, useSnapshot } from "@/lib/store/plant"
+import { usePlantDerived } from "@/lib/store/plant"
+import { MINUTE } from "@/lib/time"
 
 const col = columnHelper<BatchRow>()
 
@@ -61,10 +62,9 @@ const columns = [
 
 export function BatchesTable() {
   const router = useRouter()
-  const views = usePlant((state) => state.views)
-  const snapshot = useSnapshot((snapshot) => snapshot)
   const [scope, setScope] = useState<Scope>("live")
-  const rows = toRows(views, snapshot, scope)
+  // Projected ends move by milliseconds every tick; rounded to the minute shown, the table re-renders only on a real change.
+  const rows = usePlantDerived(({ views, snapshot }) => toRows(views, snapshot!, scope).map((row) => ({ ...row, endAt: Math.round(row.endAt / MINUTE) * MINUTE })))
 
   return (
     <DataTable

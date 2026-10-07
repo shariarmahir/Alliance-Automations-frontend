@@ -19,17 +19,19 @@ interface StatusMeta {
   soft: string
   solid: string
   ring: string
+  /** The raw colour, for effects such as the glow card border light. */
+  color: string
 }
 
 /** Status colors are reserved for machine state and always ship with an icon and a label. */
 export const STATUS_META: Record<MachineStatus, StatusMeta> = {
-  running: { label: "Running", icon: Play, text: "text-running", soft: "bg-running/12", solid: "bg-running", ring: "ring-running/30" },
-  delayed: { label: "Delayed", icon: Siren, text: "text-delayed", soft: "bg-delayed/12", solid: "bg-delayed", ring: "ring-delayed/35" },
-  held: { label: "On hold", icon: CirclePause, text: "text-held", soft: "bg-held/12", solid: "bg-held", ring: "ring-held/35" },
-  ready: { label: "Batch ready", icon: PackageCheck, text: "text-ready", soft: "bg-ready/12", solid: "bg-ready", ring: "ring-ready/30" },
-  complete: { label: "Complete", icon: CircleCheckBig, text: "text-complete", soft: "bg-complete/12", solid: "bg-complete", ring: "ring-complete/30" },
-  idle: { label: "Idle", icon: Moon, text: "text-idle", soft: "bg-idle/12", solid: "bg-idle", ring: "ring-idle/25" },
-  offline: { label: "Not available", icon: CircleSlash, text: "text-offline", soft: "bg-offline/15", solid: "bg-offline", ring: "ring-offline/30" },
+  running: { label: "Running", icon: Play, text: "text-running", soft: "bg-running/12", solid: "bg-running", ring: "ring-running/30", color: "var(--status-running)" },
+  delayed: { label: "Delayed", icon: Siren, text: "text-delayed", soft: "bg-delayed/12", solid: "bg-delayed", ring: "ring-delayed/35", color: "var(--status-delayed)" },
+  held: { label: "On hold", icon: CirclePause, text: "text-held", soft: "bg-held/12", solid: "bg-held", ring: "ring-held/35", color: "var(--status-held)" },
+  ready: { label: "Batch ready", icon: PackageCheck, text: "text-ready", soft: "bg-ready/12", solid: "bg-ready", ring: "ring-ready/30", color: "var(--status-ready)" },
+  complete: { label: "Complete", icon: CircleCheckBig, text: "text-complete", soft: "bg-complete/12", solid: "bg-complete", ring: "ring-complete/30", color: "var(--status-complete)" },
+  idle: { label: "Idle", icon: Moon, text: "text-idle", soft: "bg-idle/12", solid: "bg-idle", ring: "ring-idle/25", color: "var(--status-idle)" },
+  offline: { label: "Not available", icon: CircleSlash, text: "text-offline", soft: "bg-offline/15", solid: "bg-offline", ring: "ring-offline/30", color: "var(--status-offline)" },
 }
 
 export const STATUS_ORDER: MachineStatus[] = ["running", "delayed", "held", "ready", "complete", "idle", "offline"]

@@ -1,7 +1,10 @@
 import { Fact } from "@/components/control/fact"
+import { Panel } from "@/components/panel"
+import { PanelTitle } from "@/components/panel-title"
 import { excessTone } from "@/components/plant/excess"
+import { Batch } from "@/components/plant/icons/console-icons"
 import { ShadeSwatch } from "@/components/plant/step-readout"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { CardContent, CardDescription, CardHeader } from "@/components/ui/card"
 import type { MachineView } from "@/lib/domain/types"
 import { formatClock, formatHm, formatInt } from "@/lib/format"
 
@@ -11,9 +14,9 @@ export function BatchCard({ view }: { view: MachineView }) {
   const { batch, order, buyer } = view
 
   return (
-    <Card className="h-full">
+    <Panel className="h-full">
       <CardHeader>
-        <CardTitle>Batch</CardTitle>
+        <PanelTitle icon={Batch}>Batch</PanelTitle>
         <CardDescription>{batch ? `${batch.id} · ${buyer?.name}` : view.remark}</CardDescription>
       </CardHeader>
       {batch && order && (
@@ -38,6 +41,6 @@ export function BatchCard({ view }: { view: MachineView }) {
           </dl>
         </CardContent>
       )}
-    </Card>
+    </Panel>
   )
 }

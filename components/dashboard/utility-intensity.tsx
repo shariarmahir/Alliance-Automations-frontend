@@ -1,7 +1,10 @@
 "use client"
 
+import { Panel } from "@/components/panel"
+import { PanelTitle } from "@/components/panel-title"
+import { Utility } from "@/components/plant/icons/console-icons"
 import { Delta } from "@/components/stat-card"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { CardContent, CardDescription, CardHeader } from "@/components/ui/card"
 import { GO_LIVE_DAYS_AGO, HISTORY_DAYS, average } from "@/lib/sim/history"
 import { useKpis, usePlant } from "@/lib/store/plant"
 
@@ -16,9 +19,9 @@ export function UtilityIntensity() {
   ]
 
   return (
-    <Card className="h-full">
+    <Panel className="h-full">
       <CardHeader>
-        <CardTitle>Utility intensity</CardTitle>
+        <PanelTitle icon={Utility}>Utility intensity</PanelTitle>
         <CardDescription>Today against the four-week pre-pilot baseline</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-3">
@@ -42,6 +45,6 @@ export function UtilityIntensity() {
           )
         })}
       </CardContent>
-    </Card>
+    </Panel>
   )
 }

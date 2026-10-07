@@ -3,7 +3,7 @@
 import { Search } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
-import { StatusDot } from "@/components/plant/status"
+import { CommandMachines } from "@/components/shell/command-machines"
 import { Button } from "@/components/ui/button"
 import {
   CommandDialog,
@@ -16,12 +16,10 @@ import {
 } from "@/components/ui/command"
 import { Kbd } from "@/components/ui/kbd"
 import { NAV_ITEMS } from "@/lib/navigation"
-import { usePlant } from "@/lib/store/plant"
 
 export function CommandMenu() {
   const router = useRouter()
   const [open, setOpen] = useState(false)
-  const views = usePlant((state) => state.views)
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -69,20 +67,7 @@ export function CommandMenu() {
             ))}
           </CommandGroup>
           <CommandSeparator />
-          <CommandGroup heading="Machines">
-            {views.map((view) => (
-              <CommandItem
-                key={view.machine.id}
-                value={`${view.machine.id} ${view.machine.name} ${view.batch?.id ?? ""} ${view.buyer?.name ?? ""}`}
-                onSelect={() => go(`/control/${view.machine.id}`)}
-              >
-                <StatusDot status={view.status} />
-                <span className="font-mono text-xs text-muted-foreground">{view.machine.id}</span>
-                {view.machine.name}
-                <span className="ml-auto text-xs text-muted-foreground">{view.batch?.id ?? view.remark}</span>
-              </CommandItem>
-            ))}
-          </CommandGroup>
+          <CommandMachines onSelect={(id) => go(`/control/${id}`)} />
         </CommandList>
       </CommandDialog>
     </>

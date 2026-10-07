@@ -1,4 +1,4 @@
-import { BadgeCheck, CalendarClock, ClipboardList, Package } from "lucide-react"
+import { Batch, Completed, Delivery, Produced } from "@/components/plant/icons/console-icons"
 import { StatCard } from "@/components/stat-card"
 import { BUYERS } from "@/lib/domain/catalog"
 import type { Order } from "@/lib/domain/types"
@@ -13,19 +13,21 @@ export function CrmStats({ orders, now }: { orders: Order[]; now: number }) {
 
   return (
     <>
-      <StatCard label="Open orders" value={open.length} icon={ClipboardList} hint={`${BUYERS.length} active buyers`} />
-      <StatCard label="Left to dye" value={sumKg(open, (order) => order.qtyKg - order.dyedKg)} suffix=" kg" icon={Package} />
+      <StatCard label="Open orders" value={open.length} index={0} icon={Batch} hint={`${BUYERS.length} active buyers`} />
+      <StatCard label="Left to dye" value={sumKg(open, (order) => order.qtyKg - order.dyedKg)} suffix=" kg" index={1} icon={Produced} />
       <StatCard
         label="Shade approvals pending"
         value={orders.filter((order) => order.approval !== "approved").length}
-        icon={BadgeCheck}
+        index={2}
+        icon={Completed}
         tone="text-held"
         hint="Lab dips and corrections"
       />
       <StatCard
         label="Due in 7 days"
         value={dueThisWeek.length}
-        icon={CalendarClock}
+        index={3}
+        icon={Delivery}
         tone="text-delayed"
         hint={formatKg(sumKg(dueThisWeek, (order) => order.qtyKg))}
       />

@@ -1,18 +1,20 @@
 "use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Panel } from "@/components/panel"
+import { PanelTitle } from "@/components/panel-title"
+import { BayLoad as BayLoadIcon } from "@/components/plant/icons/console-icons"
+import { CardContent, CardDescription, CardHeader } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { bayLoad } from "@/lib/domain/analytics"
 import { formatKg } from "@/lib/format"
-import { usePlant } from "@/lib/store/plant"
+import { usePlantDerived } from "@/lib/store/plant"
 
 export function BayLoad() {
-  const views = usePlant((state) => state.views)
-  const bays = bayLoad(views)
+  const bays = usePlantDerived((state) => bayLoad(state.views))
   return (
-    <Card className="h-full">
+    <Panel className="h-full">
       <CardHeader>
-        <CardTitle>Bay load</CardTitle>
+        <PanelTitle icon={BayLoadIcon}>Bay load</PanelTitle>
         <CardDescription>Machines processing and kilograms in the bath</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
@@ -31,6 +33,6 @@ export function BayLoad() {
           </div>
         ))}
       </CardContent>
-    </Card>
+    </Panel>
   )
 }

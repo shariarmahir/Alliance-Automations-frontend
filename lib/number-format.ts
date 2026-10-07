@@ -7,14 +7,3 @@ import type { Format } from "@number-flow/react"
  */
 export const PERCENT_FORMAT: Format = { style: "percent", maximumFractionDigits: 1 }
 
-const fixed = new Map<number, Format>()
-
-/** A format with exactly `digits` decimals, one shared instance per digit count. */
-export function fixedFormat(digits: number): Format {
-  let format = fixed.get(digits)
-  if (!format) {
-    format = { maximumFractionDigits: digits, minimumFractionDigits: digits }
-    fixed.set(digits, format)
-  }
-  return format
-}

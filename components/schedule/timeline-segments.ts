@@ -34,7 +34,9 @@ export function segmentsFor(view: MachineView, snapshot: PlantSnapshot): Segment
       className: "bg-muted-foreground/25",
     }))
 
-  const run = view.state.run
+  // A finished batch keeps its run until it is unloaded, but it is already in `completed`; drawing it again here
+  // would put the same batch on the timeline twice.
+  const run = view.state.phase === "running" ? view.state.run : null
   let freeAt = snapshot.now
   if (run && view.batch) {
     const end = view.projectedEndAt ?? run.targetEndAt

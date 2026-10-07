@@ -2,8 +2,8 @@
 
 import { Slot } from "radix-ui"
 import { useEffect, useRef, type ComponentProps, type CSSProperties, type PointerEvent } from "react"
-import { onVisibilityChange } from "@/lib/visibility"
 import { cn } from "@/lib/utils"
+import { onVisibilityChange } from "@/lib/visibility"
 
 interface GlowCardProps extends ComponentProps<"div"> {
   /** Renders the child element as the card, so a link or list item keeps its own semantics. */
@@ -12,6 +12,10 @@ interface GlowCardProps extends ComponentProps<"div"> {
   index?: number
   /** Raises the card on hover. Leave off for large containers such as forms. */
   lift?: boolean
+  /** Shows the border light only on hover, for grids of many cards. */
+  quiet?: boolean
+  /** A colour for the border light and spotlight instead of the brand blue, such as a status colour. */
+  tone?: string
 }
 
 const BEAM_STAGGER_S = 1.4
@@ -21,7 +25,7 @@ const BEAM_STAGGER_S = 1.4
  * pointer on hover. The effect lives in `.glow-card` (globals.css); this feeds it the pointer position and marks the card
  * `data-offscreen` while it is scrolled out of view, which pauses the border light and any icon animating inside it.
  */
-export function GlowCard({ asChild, index = 0, lift, className, style, onPointerMove, ...props }: GlowCardProps) {
+export function GlowCard({ asChild, index = 0, lift, quiet, tone, className, style, onPointerMove, ...props }: GlowCardProps) {
   const Comp = asChild ? Slot.Root : "div"
   const ref = useRef<HTMLDivElement>(null)
 
@@ -42,8 +46,9 @@ export function GlowCard({ asChild, index = 0, lift, className, style, onPointer
     <Comp
       ref={ref}
       data-lift={lift ? "" : undefined}
+      data-quiet={quiet ? "" : undefined}
       className={cn("glow-card", className)}
-      style={{ "--beam-delay": `${-index * BEAM_STAGGER_S}s`, ...style } as CSSProperties}
+      style={{ "--beam-delay": `${-index * BEAM_STAGGER_S}s`, "--glow-tone": tone, ...style } as CSSProperties}
       onPointerMove={track}
       {...props}
     />

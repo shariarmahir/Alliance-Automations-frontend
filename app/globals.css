@@ -85,6 +85,15 @@
   --animate-icon-eye: icon-eye 4s ease-in-out infinite;
   --animate-icon-draw: icon-draw 3.2s ease-in-out infinite;
   --animate-icon-pulse: icon-pulse 2.4s ease-in-out infinite;
+  --animate-icon-ring: icon-ring 2.4s ease-in-out infinite;
+
+  @keyframes icon-ring {
+    0%, 40%, 100% { transform: rotate(0deg); }
+    8% { transform: rotate(14deg); }
+    16% { transform: rotate(-12deg); }
+    24% { transform: rotate(8deg); }
+    32% { transform: rotate(-4deg); }
+  }
 
   @keyframes icon-swing {
     0%, 100% { transform: rotate(-42deg); }
@@ -307,7 +316,8 @@
   );
 }
 
-/* Transparent card: a blue light always travels the border, and a spotlight follows the pointer on hover. */
+/* Transparent card: a blue light always travels the border, and a spotlight follows the pointer on hover.
+   `--glow-tone` recolours both, so a machine tile can carry its status colour. */
 @property --beam-angle {
   syntax: "<angle>";
   initial-value: 0deg;
@@ -341,8 +351,8 @@
     background: conic-gradient(
       from var(--beam-angle),
       transparent 0 62%,
-      color-mix(in oklch, var(--primary) 75%, transparent) 82%,
-      color-mix(in oklch, var(--primary) 100%, white 35%) 92%,
+      color-mix(in oklch, var(--glow-tone, var(--primary)) 75%, transparent) 82%,
+      color-mix(in oklch, var(--glow-tone, var(--primary)) 100%, white 35%) 92%,
       transparent 100%
     );
     mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
@@ -355,7 +365,7 @@
   }
 
   .glow-card::after {
-    background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), color-mix(in oklch, var(--primary) 16%, transparent), transparent 70%);
+    background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), color-mix(in oklch, var(--glow-tone, var(--primary)) 16%, transparent), transparent 70%);
     opacity: 0;
     transition: opacity 0.35s;
   }
@@ -366,8 +376,8 @@
 
   .glow-card:hover {
     box-shadow:
-      inset 0 0 0 1px color-mix(in oklch, var(--primary) 45%, transparent),
-      0 14px 40px -14px color-mix(in oklch, var(--primary) 45%, transparent);
+      inset 0 0 0 1px color-mix(in oklch, var(--glow-tone, var(--primary)) 45%, transparent),
+      0 14px 40px -14px color-mix(in oklch, var(--glow-tone, var(--primary)) 45%, transparent);
   }
 
   .glow-card:hover::before { opacity: 1; }
@@ -378,6 +388,28 @@
 .glow-card[data-offscreen]::before,
 .glow-card[data-offscreen] svg * {
   animation-play-state: paused;
+}
+
+/* The wallboard scales with the screen: every rem-based size grows on a 4K TV and stays readable on a laptop.
+   16px at 1920 wide, 24px at 3840, never below 14px. */
+html:has(.tv-scale) {
+  font-size: clamp(14px, 0.42vw + 8px, 30px);
+}
+
+/* A quiet card shows its border light only on hover, for grids of many cards where only a few should call out. */
+.glow-card[data-quiet]:not(:hover, :focus-visible)::before {
+  opacity: 0;
+  animation-play-state: paused;
+}
+
+/* Console navigation icons rest until the item is hovered or is the current page. */
+[data-sidebar="menu-button"]:not(:hover, [data-active="true"]) .animated-nav-icon * {
+  animation-play-state: paused;
+}
+
+/* Drawn on a 48-unit canvas, the icons need a heavier line to match lucide at sidebar size. */
+.animated-nav-icon {
+  stroke-width: 4;
 }
 
 @media (prefers-reduced-motion: no-preference) {

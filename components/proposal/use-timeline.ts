@@ -1,7 +1,7 @@
 import { addDays, differenceInCalendarWeeks, format, isValid, nextMonday, parseISO, startOfToday } from "date-fns"
 import { useState } from "react"
-import { MAX_WEEKS, MIN_WEEKS, PACE_PRESETS, PHASES, weeksForPace, type PacePreset } from "@/lib/proposal/phases"
 import type { TimelineSummary } from "@/lib/proposal/inquiry"
+import { MAX_WEEKS, MIN_WEEKS, PACE_PRESETS, PHASES, weeksForPace, type PacePreset } from "@/lib/proposal/phases"
 import { buildSchedule, type Schedule } from "@/lib/proposal/schedule"
 
 const ISO = "yyyy-MM-dd"

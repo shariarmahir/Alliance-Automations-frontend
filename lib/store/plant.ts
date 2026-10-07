@@ -1,7 +1,8 @@
+import { useMemo } from "react"
 import { create } from "zustand"
 import { buildViews, computeKpis, deriveAlerts } from "@/lib/domain/rules"
 import type { Alert, MachineView, PlantKpis, PlantSnapshot, ReasonCode } from "@/lib/domain/types"
-import { advance, applyHold, logCommand, releaseHold } from "@/lib/sim/engine"
+import { advance, applyHold, confirmLoad, confirmUnload, extendHold, logCommand, releaseHold } from "@/lib/sim/engine"
 import { buildHistory, type DailyMetric } from "@/lib/sim/history"
 import { createRandom } from "@/lib/sim/random"
 import { seedPlant } from "@/lib/sim/seed"
@@ -24,8 +25,17 @@ interface PlantState {
   setSpeed: (speed: SimSpeed) => void
   hold: (machineId: string, reason: ReasonCode, minutes: number) => void
   release: (machineId: string) => void
+  /** Bay-wide versions for shared causes such as low steam or a power cut. They skip machines the command does not fit. */
+  holdMany: (machineIds: string[], reason: ReasonCode, minutes: number) => void
+  releaseMany: (machineIds: string[]) => void
+  extendHold: (machineId: string, minutes: number) => void
+  confirmUnload: (machineId: string) => void
+  confirmLoad: (machineId: string) => void
+  /** Free-text note or a call for help, written to the machine's event log. */
+  note: (machineId: string, message: string) => void
   recordShadeCheck: (machineId: string, deltaE: number) => void
   acknowledge: (alertId: string) => void
+  acknowledgeAll: () => void
 }
 
 const random = createRandom(2026)
@@ -33,6 +43,12 @@ const random = createRandom(2026)
 function derive(snapshot: PlantSnapshot) {
   const views = buildViews(snapshot)
   return { snapshot, views, alerts: deriveAlerts(views, snapshot.acknowledged), kpis: computeKpis(views, snapshot) }
+}
+
+/** Running, and on hold (`held`) or not. */
+function isRunning(snapshot: PlantSnapshot, machineId: string, held: boolean) {
+  const state = snapshot.states.find((s) => s.machineId === machineId)
+  return state?.phase === "running" && Boolean(state.run?.hold) === held
 }
 
 /**
@@ -67,6 +83,20 @@ export const usePlant = create<PlantState>()((set, get) => {
 
     release: (machineId) => update((s) => releaseHold(s, machineId)),
 
+    holdMany: (machineIds, reason, minutes) =>
+      update((s) => machineIds.filter((id) => isRunning(s, id, false)).reduce((next, id) => applyHold(next, id, reason, minutes), s)),
+
+    releaseMany: (machineIds) =>
+      update((s) => machineIds.filter((id) => isRunning(s, id, true)).reduce((next, id) => releaseHold(next, id), s)),
+
+    extendHold: (machineId, minutes) => update((s) => extendHold(s, machineId, minutes)),
+
+    confirmUnload: (machineId) => update((s) => confirmUnload(s, machineId)),
+
+    confirmLoad: (machineId) => update((s) => confirmLoad(s, machineId)),
+
+    note: (machineId, message) => update((s) => logCommand(s, machineId, "note", message)),
+
     recordShadeCheck: (machineId, deltaE) =>
       update((s) => {
         const message = `Shade check ΔE ${deltaE.toFixed(2)} · ${deltaE <= SHADE_TOLERANCE_DE ? "pass" : "fail"}`
@@ -76,6 +106,11 @@ export const usePlant = create<PlantState>()((set, get) => {
 
     acknowledge: (alertId) =>
       update((s) => (s.acknowledged.includes(alertId) ? s : { ...s, acknowledged: [...s.acknowledged, alertId] })),
+
+    acknowledgeAll: () => {
+      const open = get().alerts.filter((alert) => !alert.acknowledged).map((alert) => alert.id)
+      if (open.length) update((s) => ({ ...s, acknowledged: [...s.acknowledged, ...open] }))
+    },
   }
 })
 
@@ -89,5 +124,17 @@ export function useSnapshot<T>(select: (snapshot: PlantSnapshot) => T): T {
 
 export const useKpis = () => usePlant((state) => state.kpis!)
 
+/** One KPI value. A component that reads only this re-renders only when it changes, not on every tick. */
+export const useKpi = <T,>(select: (kpis: PlantKpis) => T) => usePlant((state) => select(state.kpis!))
+
 export const useMachineView = (machineId: string) =>
   usePlant((state) => state.views.find((view) => view.machine.id === machineId))
+
+/**
+ * For values derived from the whole plant, such as per-bay totals or a ranked list. The component re-renders only when
+ * the derived content changes, not on every tick. Keep the result small and plain (it is compared as JSON).
+ */
+export function usePlantDerived<T>(select: (state: PlantState) => T): T {
+  const json = usePlant((state) => JSON.stringify(select(state)))
+  return useMemo(() => JSON.parse(json) as T, [json])
+}

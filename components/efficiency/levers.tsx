@@ -1,7 +1,10 @@
 "use client"
 
 import { lossRows } from "@/components/efficiency/metrics"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Panel } from "@/components/panel"
+import { PanelTitle } from "@/components/panel-title"
+import { ActionQueue } from "@/components/plant/icons/console-icons"
+import { CardContent, CardDescription, CardHeader } from "@/components/ui/card"
 import { MACHINES, REASONS } from "@/lib/domain/catalog"
 import { formatInt } from "@/lib/format"
 import { average, type DailyMetric, type LossReason } from "@/lib/sim/history"
@@ -19,9 +22,9 @@ export function Levers({ history }: { history: DailyMetric[] }) {
   const dailyKg = average(history.slice(-7), (d) => d.producedKg)
   const kgPerMachineMinute = dailyKg / (MACHINES.length * 24 * 60)
   return (
-    <Card className="h-full">
+    <Panel className="h-full">
       <CardHeader>
-        <CardTitle>Improvement levers</CardTitle>
+        <PanelTitle icon={ActionQueue}>Improvement levers</PanelTitle>
         <CardDescription>Output recovered at today&apos;s run rate of {formatInt(kgPerMachineMinute * 60)} kg per machine-hour</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col divide-y">
@@ -44,6 +47,6 @@ export function Levers({ history }: { history: DailyMetric[] }) {
           )
         })}
       </CardContent>
-    </Card>
+    </Panel>
   )
 }

@@ -1,17 +1,20 @@
 "use client"
 
 import Link from "next/link"
-import { FleetMap } from "@/components/plant/fleet-map"
+import { SCREEN_ICONS } from "@/components/landing/icons/screens"
+import { Panel } from "@/components/panel"
+import { PanelTitle } from "@/components/panel-title"
+import { FleetMap, fleetCell } from "@/components/plant/fleet-map"
 import { Button } from "@/components/ui/button"
-import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { usePlant } from "@/lib/store/plant"
+import { CardAction, CardContent, CardDescription, CardHeader } from "@/components/ui/card"
+import { usePlantDerived } from "@/lib/store/plant"
 
 export function FleetCard() {
-  const views = usePlant((state) => state.views)
+  const cells = usePlantDerived((state) => state.views.map(fleetCell))
   return (
-    <Card className="h-full">
+    <Panel className="h-full">
       <CardHeader>
-        <CardTitle>Fleet map</CardTitle>
+        <PanelTitle icon={SCREEN_ICONS.Overview}>Fleet map</PanelTitle>
         <CardDescription>Every machine by bay. The bar under each cell is cycle progress.</CardDescription>
         <CardAction>
           <Button variant="outline" size="sm" asChild>
@@ -20,8 +23,8 @@ export function FleetCard() {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <FleetMap views={views} />
+        <FleetMap cells={cells} />
       </CardContent>
-    </Card>
+    </Panel>
   )
 }

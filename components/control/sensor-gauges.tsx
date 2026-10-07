@@ -1,4 +1,6 @@
 import { Gauge } from "@/components/control/gauge"
+import { Utility, Utilization } from "@/components/plant/icons/console-icons"
+import { ANIMATED_STEP_ICON } from "@/components/plant/icons/step-icons"
 import type { MachineView } from "@/lib/domain/types"
 
 /** Full-scale values for gauges that have no recipe-derived range. */
@@ -15,11 +17,12 @@ export function SensorGauges({ view }: { view: MachineView }) {
 
   return (
     <>
-      <Gauge label="Bath temperature" value={telemetry.temperatureC} max={TEMPERATURE_MAX_C} unit="°C" digits={1} tone="text-chart-2" />
-      <Gauge label="Liquor level" value={telemetry.levelL} max={liquorL} unit="L" />
-      <Gauge label="Pressure" value={telemetry.pressureBar} max={PRESSURE_MAX_BAR} unit="bar" digits={2} />
-      <Gauge label="Circulation" value={telemetry.circulationPct} max={100} unit="%" />
-      <Gauge label="Pump power" value={telemetry.powerKw} max={machine.capacityKg * PUMP_KW_PER_KG} unit="kW" digits={1} />
+      <Gauge index={0} icon={ANIMATED_STEP_ICON.heat} label="Bath temperature" value={telemetry.temperatureC} max={TEMPERATURE_MAX_C} unit="°C" digits={1} tone="text-chart-2" />
+      <Gauge index={1} icon={ANIMATED_STEP_ICON.fill} label="Liquor level" value={telemetry.levelL} max={liquorL} unit="L" />
+      <Gauge index={2} icon={Utilization} label="Pressure" value={telemetry.pressureBar} max={PRESSURE_MAX_BAR} unit="bar" digits={2} />
+      <Gauge index={3} icon={ANIMATED_STEP_ICON.rinse} label="Circulation" value={telemetry.circulationPct} max={100} unit="%" />
+      <Gauge index={4} icon={Utility} label="Pump power" value={telemetry.powerKw} max={machine.capacityKg * PUMP_KW_PER_KG} unit="kW" digits={1} />
     </>
   )
 }
+

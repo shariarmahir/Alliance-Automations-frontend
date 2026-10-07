@@ -1,8 +1,9 @@
 "use client"
 
 import { ArrowRight, Bot } from "lucide-react"
+import { Panel } from "@/components/panel"
 import { Reveal } from "@/components/reveal"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { AGENTS, agentInsights, type AgentStage } from "@/lib/ai/agents"
 import { useKpis, usePlant, useSnapshot } from "@/lib/store/plant"
 import { cn } from "@/lib/utils"
@@ -24,7 +25,7 @@ export function AgentGrid() {
     <div className="grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
       {AGENTS.map((agent, index) => (
         <Reveal key={agent.id} order={index}>
-          <Card className="h-full">
+          <Panel className="h-full">
             <CardHeader>
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-3">
@@ -64,7 +65,7 @@ export function AgentGrid() {
                 Phase {agent.phase} · needs {agent.needs.toLowerCase()}
               </p>
             </CardContent>
-          </Card>
+          </Panel>
         </Reveal>
       ))}
     </div>

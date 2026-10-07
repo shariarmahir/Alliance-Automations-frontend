@@ -1,6 +1,7 @@
 "use client"
 
-import { Card, CardContent } from "@/components/ui/card"
+import { Panel } from "@/components/panel"
+import { CardContent } from "@/components/ui/card"
 
 const PIPELINE = [
   { label: "Signals", detail: "PLC, sensors, operator tablets" },
@@ -12,7 +13,7 @@ const PIPELINE = [
 
 export function DataFlow() {
   return (
-    <Card size="sm">
+    <Panel className="[--card-spacing:--spacing(3)] md:[--card-spacing:--spacing(4)]">
       <CardContent>
         <ol className="grid gap-3 sm:grid-cols-5">
           {PIPELINE.map((step, index) => (
@@ -24,6 +25,6 @@ export function DataFlow() {
           ))}
         </ol>
       </CardContent>
-    </Card>
+    </Panel>
   )
 }

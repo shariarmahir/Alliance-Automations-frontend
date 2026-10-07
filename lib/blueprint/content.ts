@@ -1,5 +1,5 @@
-import { PHASES } from "@/lib/proposal/phases"
 import type { LayerId, PackageId } from "@/lib/blueprint/build"
+import { PHASES } from "@/lib/proposal/phases"
 
 /** Copy and illustrative figures for the blueprint page. Charts built from these are labelled illustrative on the page. */
 

@@ -3,9 +3,13 @@
 import { addMonths, eachDayOfInterval, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, startOfMonth, startOfWeek } from "date-fns"
 import { ChevronLeft, ChevronRight, PackageCheck, Wrench } from "lucide-react"
 import { useState } from "react"
+import { SCREEN_ICONS } from "@/components/landing/icons/screens"
+import { Panel } from "@/components/panel"
+import { PanelTitle } from "@/components/panel-title"
+import { Shift } from "@/components/plant/icons/console-icons"
 import { maintenanceOn, deliveriesOn } from "@/components/schedule/calendar-items"
 import { Button } from "@/components/ui/button"
-import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { CardAction, CardContent, CardDescription, CardHeader } from "@/components/ui/card"
 import { useSnapshot } from "@/lib/store/plant"
 import { cn } from "@/lib/utils"
 
@@ -20,9 +24,9 @@ export function MonthCalendar() {
 
   return (
     <div className="grid gap-4 xl:grid-cols-[1fr_340px]">
-      <Card>
+      <Panel>
         <CardHeader>
-          <CardTitle>{format(month, "MMMM yyyy")}</CardTitle>
+          <PanelTitle icon={SCREEN_ICONS.Schedule}>{format(month, "MMMM yyyy")}</PanelTitle>
           <CardDescription>Buyer deliveries and preventive maintenance. Weeks start Saturday.</CardDescription>
           <CardAction className="flex gap-1">
             <Button variant="outline" size="icon-sm" onClick={() => setMonth((m) => addMonths(m, -1))} aria-label="Previous month">
@@ -76,11 +80,11 @@ export function MonthCalendar() {
             })}
           </div>
         </CardContent>
-      </Card>
+      </Panel>
 
-      <Card>
+      <Panel>
         <CardHeader>
-          <CardTitle>{format(selected, "EEEE, d MMMM")}</CardTitle>
+          <PanelTitle icon={Shift}>{format(selected, "EEEE, d MMMM")}</PanelTitle>
           <CardDescription>{agenda.length ? `${agenda.length} scheduled items` : "Nothing scheduled"}</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-3">
@@ -99,7 +103,7 @@ export function MonthCalendar() {
             )
           })}
         </CardContent>
-      </Card>
+      </Panel>
     </div>
   )
 }

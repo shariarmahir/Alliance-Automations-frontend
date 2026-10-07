@@ -1,5 +1,6 @@
 "use client"
 
+import { ActionCard } from "@/components/dashboard/action-card"
 import { AlertsCard } from "@/components/dashboard/alerts-card"
 import { BayLoad } from "@/components/dashboard/bay-load"
 import { DeliveryRisk } from "@/components/dashboard/delivery-risk"
@@ -17,27 +18,30 @@ export function DashboardView() {
         <Reveal>
           <KpiRow />
         </Reveal>
-        <div className="grid gap-4 xl:grid-cols-5">
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-5">
           <Reveal order={1} className="xl:col-span-3">
             <FleetCard />
           </Reveal>
           <Reveal order={2} className="xl:col-span-2">
-            <AlertsCard />
+            <ActionCard />
           </Reveal>
         </div>
-        <div className="grid gap-4 xl:grid-cols-5">
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-5">
           <Reveal order={3} className="xl:col-span-3">
             <OutputChart />
           </Reveal>
           <Reveal order={4} className="xl:col-span-2">
-            <BayLoad />
+            <AlertsCard />
           </Reveal>
         </div>
-        <div className="grid gap-4 xl:grid-cols-5">
-          <Reveal order={5} className="xl:col-span-3">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
+          <Reveal order={5} className="lg:col-span-2 xl:col-span-1">
             <DeliveryRisk />
           </Reveal>
-          <Reveal order={6} className="xl:col-span-2">
+          <Reveal order={6}>
+            <BayLoad />
+          </Reveal>
+          <Reveal order={7}>
             <UtilityIntensity />
           </Reveal>
         </div>

@@ -154,7 +154,7 @@ export interface CompletedBatch {
   waterL: number
 }
 
-export type PlantEventKind = "start" | "step" | "hold" | "release" | "complete" | "command" | "shade-check"
+export type PlantEventKind = "start" | "step" | "hold" | "release" | "complete" | "command" | "shade-check" | "note"
 
 export interface PlantEvent {
   id: string

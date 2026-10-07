@@ -3,8 +3,9 @@
 import { Bot, Sparkles, User } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import { useState } from "react"
+import { Panel } from "@/components/panel"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { ASSISTANT_QUESTIONS } from "@/lib/ai/agents"
 import { useKpis, usePlant, useSnapshot } from "@/lib/store/plant"
@@ -29,7 +30,7 @@ export function Assistant() {
   }
 
   return (
-    <Card className="h-full">
+    <Panel className="h-full">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Sparkles className="size-4 text-primary" aria-hidden />
@@ -71,6 +72,6 @@ export function Assistant() {
           ))}
         </div>
       </CardContent>
-    </Card>
+    </Panel>
   )
 }

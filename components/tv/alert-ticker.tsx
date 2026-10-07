@@ -4,11 +4,11 @@ import { BellRing } from "lucide-react"
 import { alertTitle } from "@/components/plant/alert-list"
 import { excessTone } from "@/components/plant/excess"
 import { formatHm } from "@/lib/format"
-import { usePlant } from "@/lib/store/plant"
+import { usePlantDerived } from "@/lib/store/plant"
 import { cn } from "@/lib/utils"
 
 export function AlertTicker() {
-  const alerts = usePlant((state) => state.alerts)
+  const alerts = usePlantDerived((state) => state.alerts)
   const renderItems = (copy: string) =>
     alerts.length ? (
       alerts.map((alert) => (
@@ -25,8 +25,8 @@ export function AlertTicker() {
     )
 
   return (
-    <footer className="mx-8 mt-4 mb-5 flex items-center overflow-hidden rounded-xl bg-card ring-1 ring-delayed/40">
-      <div className="z-10 flex shrink-0 items-center gap-2 bg-delayed px-5 py-3 font-semibold text-white">
+    <footer className="mx-4 mt-4 mb-4 flex items-center overflow-hidden rounded-2xl bg-card/45 ring-1 ring-delayed/40 md:mx-8 md:mb-5">
+      <div className="z-10 flex shrink-0 items-center gap-2 bg-delayed px-3 py-3 font-semibold text-white md:px-5">
         <BellRing className="size-5" aria-hidden />
         Alerts ({alerts.length})
       </div>
